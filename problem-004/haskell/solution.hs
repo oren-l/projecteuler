@@ -1,11 +1,14 @@
+import Data.List (sortOn)
+
+
 factors :: [(Int,Int)]
 factors = [ (a,b) |  a <- range, b <- range, a >= b]
     where
-        range = [99, 98 .. 10]
+        range = [100 .. 999]
 
 
-answer :: Int
-answer = head $ filter isPalindrome $ map multiply factors
+answer :: (Int, (Int,Int))
+answer = head $ reverse $ sortOn fst palindromes
     where
         isPalindrome n  = (show n) == (reverse.show $ n)
-        multiply (a,b)  = a * b
+        palindromes     = [ (res, (a,b)) | (a,b) <- factors, let res = a * b, isPalindrome res ]
