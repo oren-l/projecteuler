@@ -3,12 +3,15 @@
 import System.Environment
 
 sieve :: Int -> [Int]
-sieve n = go [2..(n-1)] []
+sieve n = go (n-1) [2..(n-1)] []
   where
-    go :: [Int] -> [Int] -> [Int]
-    go [] res = res
-    go (n:ns) res = go [m | m <- ns, m `mod` n /= 0] (n:res)
+    go :: Int -> [Int] -> [Int] -> [Int]
+    go _   []     res = res
+    go max (n:ns) res
+      | n > isqrt max = (n:ns) ++ res
+      | otherwise    = go max [m | m <- ns, m `mod` n /= 0] (n:res)
 
+isqrt = floor . sqrt . fromIntegral
 
 main = do
   args <- getArgs
